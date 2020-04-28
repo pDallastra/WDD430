@@ -1,0 +1,12 @@
+.panel-heading {
+    height: 80px;
+    justify-content: space-between;
+}
+
+.content-head {
+    margin: auto;
+}
+
+.btn {
+    margin: 15px 0;
+}
