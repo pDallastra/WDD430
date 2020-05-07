@@ -7,7 +7,7 @@ import { Contact } from '../contact.model';
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
-  @Output() clickedContactEvent = new EventEmitter<Contact>();
+  @Output() selectedContactEvent = new EventEmitter<Contact>();
 
   contacts: Contact[] = [
     new Contact(
@@ -30,7 +30,7 @@ export class ContactListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClicked(contact: Contact){
-    this.clickedContactEvent.emit(contact);
+  onSelected(contact: Contact){
+    this.selectedContactEvent.emit(contact);
   }
 }

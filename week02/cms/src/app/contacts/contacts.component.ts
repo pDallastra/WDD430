@@ -7,7 +7,8 @@ import { Contact } from './contact.model';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  clickedContact: Contact;
+  selectedContact: Contact;
+  
   constructor() { }
 
   ngOnInit(): void {
