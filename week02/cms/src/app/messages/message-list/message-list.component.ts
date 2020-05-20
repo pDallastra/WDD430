@@ -12,9 +12,11 @@ export class MessageListComponent implements OnInit {
 
   ngOnInit(): void {
     this.messages = this.messageService.getMessages();
+
   }
 
   onAddMessage(message: Message){
     this.messages.push(message);
+    this.messageService.messageChangeEvent.emit(message);
   }
 }
