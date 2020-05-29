@@ -5,10 +5,10 @@
         <div class="col-xs-12">
             <h2>{{contact.name}}</h2>
             <div class="pull-left"><img class="img-responsive" src="{{contact.imageUrl}}" alt=""></div>
-            <div class="pull-right">
-                <button class="btn btn-primary" type="button">Edit</button>
-                <button class="btn btn-danger" type="button">Delete</button>
-            </div>
+            <span class="pull-right btn-toolbar" style="margin-top: 35px;">
+              <a class="btn btn-primary" routerLink="edit">Edit</a>
+              <a class="btn btn-danger" (click)="onDelete()">Delete</a>
+          </span>
         </div>
     </div>
      

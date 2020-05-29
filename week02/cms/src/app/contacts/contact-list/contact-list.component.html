@@ -1,17 +1,16 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <div class="row content-head">
-            <h3 class="pull-left">Contacts</h3>
-            <a class="pull-right btn btn-success">New Contact</a>
+            <h4 class="pull-left">Contacts</h4>
+            <a class="pull-right btn btn-success" routerLink="new">New Contact</a>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="panel-body">
-                <app-contact-item 
-                *ngFor="let contact of contacts"
-                [contact]="contact"
-                (click)="onSelected(contact)"></app-contact-item>
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <app-contact-item *ngFor="let contactItem of contacts" [contact]="contactItem">
+                </app-contact-item>
             </div>
         </div>
     </div>
