@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-body">
-      <form id="contact-edit">
+      <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
         <div class="row">
           <div class="col-sm-12 form-group">
             <label for="name">Name</label>
@@ -9,7 +9,11 @@
               id="name"
               class="form-control required"
               size="120"
-              max="120">
+              max="120"
+              name="name"
+              ngModel
+              #name="ngModel"
+              required>
           </div>
   
           <div class="col-sm-12 form-group">
@@ -19,9 +23,13 @@
               id="email"
               class="form-control required"
               size="120"
-              max="255">
+              max="255"
+              name="email"
+              ngModel
+              #email="ngModel"
+              required>
           </div>
-  
+          <div class="alert alert-danger" *ngIf="!email.valid && email.dirty">Enter a valid Email address</div>
           <div class="col-sm-12 form-group">
             <label for="phone">Phone</label>
             <input
@@ -29,10 +37,12 @@
               id="phone"
               class="form-control invalid"
               size="150"
-              max="255">
-  
+              max="255"
+              name="phone"
+              ngModel
+              #phone="ngModel">
           </div>
-  
+          <div class="alert alert-danger" *ngIf="!phone.valid && phone.dirty">Enter a valid phone number</div>
           <div class="col-sm-12 form-group">
             <label for="imageUrl">Image URL</label>
             <input
@@ -40,7 +50,10 @@
               id="imageUrl"
               class="form-control"
               size="150"
-              max="255">
+              max="255"
+              name="imageUrl"
+              ngModel
+              #imageUrl="ngModel">
           </div>
         </div>
   
@@ -48,12 +61,15 @@
           <label for="groupList">Group contacts</label>
   
           <div class="row" id="groupList"
-               style="min-height: 3rem;" >
+               style="min-height: 3rem;" dnd-droppable [dropZones]="['contactGroup']" (onGroupSuccess)="addToGroup($event)">
   
             <div *ngFor="let contact of groupContacts; let i = index">
               <div>
-                <app-contact-item class="col-sm-11" [contact]="contact"></app-contact-item>
-                <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
+                <app-contact-item class="col-sm-11" [contact]="contact" 
+                dnd-draggable [dragEnabled]="true" [dragData]="contact" [dropZones]="['contactGroup']">
+              </app-contact-item>
+                <div class="alert alert-danger" #ngIf="!email.valid && email.touched || !name.valid && name.touched">The Name and Email are required</div>
+                <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)" [disabled]="!f.valid">X</button>
               </div>
             </div>
             <span class="dragMsg" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
