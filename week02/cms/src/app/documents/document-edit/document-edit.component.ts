@@ -9,52 +9,36 @@ import { Document } from '../document.model';
   templateUrl: './document-edit.component.html',
   styleUrls: ['./document-edit.component.css']
 })
+
 export class DocumentEditComponent implements OnInit {
-  @ViewChild('f') signupForm: NgForm;
+  @ViewChild('f', { static: false }) docForm: NgForm;
   originalDocument: Document;
   document: Document;
   editMode: boolean = false;
 
-  constructor(private documentService: DocumentsService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private documentService: DocumentsService) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        if(params.id === undefined|| params.id == null){
-          this.editMode = false;
-          return
-        }
-        this.originalDocument = this.documentService.getDocument(params.id);
+    this.route.params.subscribe((params: Params) => {
+      this.originalDocument = this.documentService.getDocument('id');
+    });
+  }
 
-        if(this.originalDocument === undefined || this.originalDocument == null){
-          return
-        }
-
-        this.editMode = true;
-        this.document = JSON.parse(JSON.stringify(this.originalDocument));
-      }
+  onSubmit() {
+    let newDocument = new Document(
+      this.documentService.getMaxId.toString(),
+      this.docForm.value.name,
+      this.docForm.value.description,
+      this.docForm.value.url
     )
+    this.documentService.addDocument(newDocument);
+    this.onCancel();
   }
 
   onCancel() {
-    this.router.navigateByUrl('/documents');
-  }
-
-  onSubmit(form: NgForm) {
-    let name = form.value.name;
-    let description = form.value.description;
-    let documentUrl = form.value.documentUrl;
-
-    let newDocument = new Document('12', name, description, documentUrl);
-
-    if(this.editMode == true){
-      this.documentService.updateDocument(this.originalDocument, newDocument)
-    } else{
-      this.documentService.addDocument(newDocument);
-    }
-
-    this.router.navigateByUrl('/documents');
+    this.editMode = false;
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }
