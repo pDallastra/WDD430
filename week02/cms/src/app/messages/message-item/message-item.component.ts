@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { Message } from '../message.model';
-// import { Contact } from '/Users/Dallastra/Documents/WDD430/week02/cms/src/app/contacts/contact.model'
 import { Contact } from '../../contacts/contact.model'
 import { ContactsService } from 'src/app/contacts/contacts.service';
 @Component({
