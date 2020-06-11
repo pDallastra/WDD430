@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { DocumentsService } from '../documents.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import { DocumentsService } from '../documents.service';
 import { Document } from '../document.model';
 
 @Component({
@@ -11,7 +12,8 @@ import { Document } from '../document.model';
 })
 
 export class DocumentEditComponent implements OnInit {
-  @ViewChild('f', { static: false }) docForm: NgForm;
+  @ViewChild('f', { static: false }) documentForm: NgForm;
+  
   originalDocument: Document;
   document: Document;
   editMode: boolean = false;
@@ -22,18 +24,24 @@ export class DocumentEditComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.originalDocument = this.documentService.getDocument('id');
+      this.originalDocument = this.documentService.getDocument(params['id']);
     });
   }
 
   onSubmit() {
+    let checkEditMode = this.documentService.getDocument(this.documentForm.value.id);
+    console.log(checkEditMode);
     let newDocument = new Document(
       this.documentService.getMaxId.toString(),
-      this.docForm.value.name,
-      this.docForm.value.description,
-      this.docForm.value.url
+      this.documentForm.value.name,
+      this.documentForm.value.description,
+      this.documentForm.value.url
     )
-    this.documentService.addDocument(newDocument);
+    if(checkEditMode === null){
+      this.documentService.addDocument(newDocument);
+    } else {
+      this.documentService.updateDocument(checkEditMode, newDocument);
+    }
     this.onCancel();
   }
 

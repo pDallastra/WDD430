@@ -2,6 +2,13 @@
   <div class="panel-body">
     <form id="contact-edit" #f="ngForm" (ngSubmit)="onSubmit()">
       <div class="row">
+
+        <div class="col-sm-12 form-group" style="display: none;">
+          <label for="id">id</label>
+          <input type="text" id="id" class="form-control required" size="120" max="120" [ngModel]="contact?.id"
+            #id="ngModel" name="id" required>
+        </div>
+
         <div class="col-sm-12 form-group">
           <label for="name">Name</label>
           <input type="text" id="name" class="form-control required" size="120" max="120" [ngModel]="contact?.name"
@@ -52,7 +59,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-success" type="submit" [disabled]="!f.valid">Save</button>
+          <button class="btn btn-success" type="submit" [disabled]="!phone.valid || !email.valid || !name.valid">Save</button>
           <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
         </div>
       </div>

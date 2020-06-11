@@ -56,7 +56,6 @@ export class DocumentsService {
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
-
     if (originalDocument === null || originalDocument === undefined || newDocument === null || newDocument === undefined) {
 
       return;
@@ -68,7 +67,7 @@ export class DocumentsService {
     }
 
     newDocument.id = originalDocument.id;
-    document[pos] = newDocument;
+    this.documents[pos] = newDocument;
     const documentListClone = this.documents.slice();
     this.documentChangedEvent.next(documentListClone);
   }

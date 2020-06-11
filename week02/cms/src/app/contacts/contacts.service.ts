@@ -61,14 +61,13 @@ export class ContactsService {
     if(originalContact === null ||  originalContact === undefined || newContact === null || newContact === undefined){
       return;
     }
-
+  
     const pos = this.contacts.indexOf(originalContact);
     if(pos < 0){
       return;
     }
-
     newContact.id = originalContact.id;
-    document[pos] = newContact;
+    this.contacts[pos] = newContact;
 
     const contactListClone = this.contacts.slice();
     this.contactListChangedEvent.next(contactListClone)

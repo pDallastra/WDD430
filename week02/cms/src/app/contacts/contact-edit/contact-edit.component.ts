@@ -14,6 +14,7 @@ import { ContactsService } from '../contacts.service';
 
 export class ContactEditComponent implements OnInit {
   @ViewChild('f', { static: false }) contactForm: NgForm;
+  
   contact: Contact = null;
   groupContacts: Contact[] = [];
   editMode: boolean = false;
@@ -31,6 +32,7 @@ export class ContactEditComponent implements OnInit {
   }
 
   onSubmit() {
+    let checkEditMode = this.contactService.getContact(this.contactForm.value.id);
     let newContact = new Contact(
       this.contactService.getMaxId.toString(),
       this.contactForm.value.name,
@@ -39,8 +41,11 @@ export class ContactEditComponent implements OnInit {
       this.contactForm.value.imageUrl,
       this.groupContacts
     )
-    console.log(newContact);
+    if(checkEditMode === null){
     this.contactService.addContact(newContact);
+    } else {
+      this.contactService.updateContact(checkEditMode, newContact);
+    }
     this.onCancel();
   }
 
@@ -59,7 +64,6 @@ export class ContactEditComponent implements OnInit {
 
   addToGroup($event: any) {
     let selectedContact: Contact = $event.dragData;
-    console.log(selectedContact);
     this.invalidGroupContact = this.isInvalidContact(selectedContact);
     if (this.invalidGroupContact) {
       return;
