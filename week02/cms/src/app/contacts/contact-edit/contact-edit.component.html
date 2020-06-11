@@ -13,7 +13,7 @@
           <input type="text" id="email" class="form-control required" size="120" max="255" [ngModel]="contact?.email"
             email #email="ngModel" name="email" required>
 
-          <div *ngIf="!email.valid && email.dirty" class="alert alert-danger">Enter a valid email address</div>
+          <div *ngIf="!email.valid && email.dirty" class="alert alert-danger">You must enter a valid email.</div>
         </div>
 
         <div class="col-sm-12 form-group">
@@ -21,7 +21,7 @@
           <input type="text" id="phone" class="form-control invalid" size="150" max="255" [ngModel]="contact?.phone"
             pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*" #phone="ngModel" required name="phone">
 
-          <div *ngIf="!phone.valid && phone.dirty" class="alert alert-danger">Enter a valid phone number</div>
+          <div *ngIf="!phone.valid && phone.dirty" class="alert alert-danger">Enter a valid phone number.</div>
         </div>
 
         <div class="col-sm-12 form-group">
@@ -34,9 +34,9 @@
       <div class="form-group">
         <label for="groupList">Group contacts</label>
 
-        <div class="row" id="groupList" style="min-height: 3rem;" dnd-droppable [dropZones]="['contactGroup']"
-          (onDropSuccess)="addToGroup($event)">
-
+        <div class="row" id="groupList" style="min-height: 3rem;" 
+        dnd-droppable [dropZones]="['contactGroup']" (onDropSuccess)="addToGroup($event)">
+        <div class="alert alert-danger" *ngIf="invalidGroupContact">Contact can bot be added to the group. It is already in group or is the current contact.</div>
           <div *ngFor="let contact of groupContacts; let i = index">
             <div>
               <app-contact-item class="col-sm-11" [contact]="contact"></app-contact-item>
@@ -48,7 +48,7 @@
 
       </div>
 
-      <div class="alert alert-danger" *ngIf="!f.valid && f.touched">The name and email are required</div>
+      <div class="alert alert-danger" *ngIf="!f.valid && f.touched">The Name and Email are required</div>
 
       <div class="row">
         <div class="col-xs-12">

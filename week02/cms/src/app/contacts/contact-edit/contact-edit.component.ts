@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Contact } from '../contact.model';
+import { Router, ActivatedRoute, Params } from '@angular/router'; 
 import { NgForm } from '@angular/forms';
+
+import { Contact } from '../contact.model';
 import { ContactsService } from '../contacts.service';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+
 
 @Component({
   selector: 'app-contact-edit',
@@ -60,6 +62,7 @@ export class ContactEditComponent implements OnInit {
     if (this.invalidGroupContact) {
       return;
     }
+    
     this.groupContacts.push(selectedContact);
     this.invalidGroupContact = false;
   }
