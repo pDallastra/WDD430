@@ -39,6 +39,7 @@ export class ContactEditComponent implements OnInit {
       this.contactForm.value.imageUrl,
       this.groupContacts
     )
+    console.log(newContact);
     this.contactService.addContact(newContact);
     this.onCancel();
   }
@@ -58,6 +59,7 @@ export class ContactEditComponent implements OnInit {
 
   addToGroup($event: any) {
     let selectedContact: Contact = $event.dragData;
+    console.log(selectedContact);
     this.invalidGroupContact = this.isInvalidContact(selectedContact);
     if (this.invalidGroupContact) {
       return;
