@@ -1,8 +1,9 @@
 import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+
 import { DocumentsComponent } from './documents/documents.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
-import { NgModule } from '@angular/core';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { DocumentDetailComponent } from './documents/document-detail/document-detail.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
@@ -61,7 +62,6 @@ const appRoutes: Routes = [
     exports: [RouterModule]
 })
 
-//expor the routing class
 export class AppRoutingModule {
 
 }

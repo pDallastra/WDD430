@@ -1,25 +1,40 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Document } from './document.model'
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentsService {
   documents: Document[];
-
   maxDocumentId: number;
-
   documentChangedEvent = new EventEmitter<Document[]>();
-
-  constructor() {
+  maxDocumentID: number;
+  constructor(private http: HttpClient) {
     this.documents = MOCKDOCUMENTS;
 
     this.maxDocumentId = this.getMaxId();
   }
 
-  getDocuments(): Document[] {
-    return this.documents.slice();
+  getHttp() {
+    this.http.get('https://angular-w10.firebaseio.com/');
+  }
+
+  getDocuments(){
+    this.http.get('https://angular-w10.firebaseio.com/documents.json')
+    .subscribe(
+      (documents: Document[]) => {
+        this.documents = documents;
+        this.maxDocumentID = this.getMaxId();
+        this.documents.sort((a,b) => 
+          (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0
+        )
+        this.documentChangedEvent.next(this.documents.slice());
+      }),
+      (error: any) => {
+        console.log(error);
+      }
   }
 
   getDocument(id: string): Document {
@@ -83,5 +98,21 @@ export class DocumentsService {
     }
     this.documents.splice(pos, 1);
     this.documentChangedEvent.emit(this.documents.slice());
+  }
+
+  storeMessages() {
+    let documents = JSON.stringify(this.documents);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    this.http.put('https://angular-w10.firebaseio.com/documents.json', documents, { headers: headers })
+
+      .subscribe(
+        () => {
+          this.documentChangedEvent.next(this.documents.slice());
+        }
+      )
   }
 }
