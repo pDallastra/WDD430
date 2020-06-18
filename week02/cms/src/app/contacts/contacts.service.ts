@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
   providedIn: 'root'
 })
 export class ContactsService {
-  contacts: Contact[];
+  contacts: Contact[] = [];
 
   contactChangedEvent = new EventEmitter<Contact[]>();
 
@@ -52,7 +52,7 @@ export class ContactsService {
     for (const contact of this.contacts) {
       const currentId = +contact.id;
       if (currentId > maxId) {
-        maxId = currentId;
+          maxId = currentId;
       }
     }
     return maxId;
@@ -107,9 +107,7 @@ export class ContactsService {
       'Content-Type': 'application/json'
     });
 
-    //put method with url, contacts object to replace, and headers
-    this.http.put('https://cms-app-d5fce.firebaseio.com/contacts.json', contacts, { headers: headers })
-      
+    this.http.put('https://angular-w10.firebaseio.com/contacts.json', contacts, { headers: headers })
       .subscribe(
         () => {
           this.contactListChangedEvent.next(this.contacts.slice());
