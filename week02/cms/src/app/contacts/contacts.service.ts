@@ -17,7 +17,7 @@ export class ContactsService {
   maxContactId: number;
 
   constructor(private http: HttpClient) {
-    this.contacts = MOCKCONTACTS;
+    this.getContacts();
 
     this.maxContactId = this.getMaxId();
   }
@@ -59,15 +59,15 @@ export class ContactsService {
   }
 
   addContact(newContact: Contact) {
-    if(newContact === null || newContact === undefined) {
+    if (newContact === null || newContact === undefined) {
       return;
     }
 
     this.maxContactId++;
     newContact.id = this.maxContactId.toString();
+
     this.contacts.push(newContact);
-    const contactListClone = this.contacts.slice();
-    this.contactListChangedEvent.next(contactListClone);
+    this.storeContacts();
   }
 
   updateContact(originalContact: Contact, newContact: Contact){
@@ -79,11 +79,11 @@ export class ContactsService {
     if(pos < 0){
       return;
     }
-    newContact.id = originalContact.id;
-    this.contacts[pos] = newContact;
 
-    const contactListClone = this.contacts.slice();
-    this.contactListChangedEvent.next(contactListClone)
+    newContact.id = originalContact.id;
+
+    this.contacts[pos] = newContact;
+    this.storeContacts();
   }
 
   deleteContact(contact: Contact) {
@@ -95,8 +95,9 @@ export class ContactsService {
     if (pos < 0) {
       return;
     }
+    
     this.contacts.splice(pos, 1);
-    this.contactListChangedEvent.next(this.contacts.slice());
+    this.storeContacts();
   }
 
   storeContacts() {

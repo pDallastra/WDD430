@@ -54,8 +54,8 @@ export class MessagesService {
   }
 
    addMessage(message: Message){
-     this.messages.push(message)
-     this.messageChangeEvent.emit(this.messages.slice());
+    this.messages.push(message);
+    this.storeMessages();
    }
 
    storeMessages() {

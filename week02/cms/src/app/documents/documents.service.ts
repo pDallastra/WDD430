@@ -7,18 +7,13 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
   providedIn: 'root'
 })
 export class DocumentsService {
-  documents: Document[];
+  documents: Document[] = [];
   maxDocumentId: number;
   documentChangedEvent = new EventEmitter<Document[]>();
-  maxDocumentID: number;
   constructor(private http: HttpClient) {
-    this.documents = MOCKDOCUMENTS;
+    this.getDocuments();
 
     this.maxDocumentId = this.getMaxId();
-  }
-
-  getHttp() {
-    this.http.get('https://angular-w10.firebaseio.com/');
   }
 
   getDocuments(){
@@ -26,7 +21,7 @@ export class DocumentsService {
     .subscribe(
       (documents: Document[]) => {
         this.documents = documents;
-        this.maxDocumentID = this.getMaxId();
+        this.maxDocumentId = this.getMaxId();
         this.documents.sort((a,b) => 
           (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0
         )
@@ -66,13 +61,11 @@ export class DocumentsService {
     newDocument.id = this.maxDocumentId.toString();
 
     this.documents.push(newDocument);
-    const documentListClone = this.documents.slice();
-    this.documentChangedEvent.next(documentListClone);
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
-    if (originalDocument === null || originalDocument === undefined || newDocument === null || newDocument === undefined) {
-
+    if (originalDocument === null || originalDocument === undefined || newDocument === null || newDocument === undefined) {    
       return;
     }
 
@@ -82,9 +75,9 @@ export class DocumentsService {
     }
 
     newDocument.id = originalDocument.id;
+
     this.documents[pos] = newDocument;
-    const documentListClone = this.documents.slice();
-    this.documentChangedEvent.next(documentListClone);
+    this.storeDocuments();
   }
 
   deleteDocument(document: Document) {
@@ -97,10 +90,10 @@ export class DocumentsService {
       return;
     }
     this.documents.splice(pos, 1);
-    this.documentChangedEvent.emit(this.documents.slice());
+    this.storeDocuments();
   }
 
-  storeMessages() {
+  storeDocuments() {
     let documents = JSON.stringify(this.documents);
 
     const headers = new HttpHeaders({
